@@ -1,0 +1,98 @@
+<script src="https://assets.crowd.aws/crowd-html-elements.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+
+<crowd-form>
+
+    <div>
+        <h1>Ecommerce Revenue and Views by Platform and Market</h1>
+    </div>
+
+    <div style="margin-left: 40px">
+        <h2>Instructions</h2>
+        <p>The following entries were identified as anomalies.<br/> 
+            Please review the views and revenue scores for the platform and market place.<br/>
+            Check the radio button to confirm whether it was an anomaly.<br/>
+            Please enter any optional comments for the anomaly.
+        </p>
+        <br>
+    </div>
+    <div>
+    <table>
+    <tr>
+        <th></th>
+        <th>Timestamp</th>
+        <th>Platform</th>
+        <th>Market Place</th>
+        <th>Anomaly metric</th>
+        <th>metric value</th>
+        <th>Anomaly?</th>
+        <th>Comment</th>
+    </tr>
+    
+    {% for entry in task.input.l4m_ecom_anomaly %}
+
+        <tr>
+            <td><crowd-text-area name="sno-{{ forloop.index }}" value="{{ forloop.index }}"></crowd-text-area></td>
+            <td><crowd-text-area name="timestamp-{{ forloop.index }}" value="{{ entry.timestamp }}"></crowd-text-area></td>
+            <td><crowd-text-area name="platform-{{ forloop.index }}" value="{{ entry.platform }}"></crowd-text-area></td>
+            <td><crowd-text-area name="marketplace-{{ forloop.index }}" value="{{ entry.marketplace }}"></crowd-text-area></td>     
+            <td><crowd-text-area name="metric_name-{{ forloop.index }}" value="{{ entry.metric_name }}"></crowd-text-area></td>     
+            <td><crowd-text-area name="metric_value-{{ forloop.index }}" value="{{ entry.metric_value }}"></crowd-text-area></td>     
+            <td><crowd-checkbox name="anomaly_found-{{ forloop.index }}">Anomaly Found</crowd-checkbox></td>
+            <td>
+                <div><crowd-input name="comment-{{ forloop.index }}" placeholder="Enter optional comment"></crowd-input>
+            </td>
+        </tr>
+      {% endfor %}
+    </table>
+    <br>
+    </div>
+</crowd-form>
+
+<style>
+  greenbg {
+    background: #feee23;
+    display: block;
+  }
+
+  table {
+    border-spacing: 0; 
+  }
+
+  th {
+    background-color: #8888ee;
+    color: #f3f3f3;
+    font-weight: 700;
+  }
+
+  th, td {
+      border: 1px solid blue;
+  }
+
+  td {
+    padding-left: 10px ;
+    padding-right: 10px ;
+  }
+
+</style>
+
+<script>
+window.chartColors = {
+  red: 'rgb(255, 99, 132)',
+  orange: 'rgb(255, 159, 64)',
+  yellow: 'rgb(255, 205, 86)',
+  green: 'rgb(75, 192, 192)',
+  blue: 'rgb(54, 162, 235)',
+  purple: 'rgb(153, 102, 255)',
+  grey: 'rgb(231,233,237)'
+};
+
+var signal = "{{task.input.l4m_ecom_anomaly | to_json}}";
+var timestamp = [];
+var platform = [];
+var marketplace = [];
+var metric_name = [];
+var metric_value = [];
+
+  
+</script>
